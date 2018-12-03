@@ -28,6 +28,7 @@ class GenerosController extends \yii\web\Controller
             Yii::$app->db->createCommand()
                 ->insert('generos', $generosForm->attributes)
                 ->execute();
+            Yii::$app->session->setFlash('success', 'Genero insertado correctamente');
             return $this->redirect(['generos/index']);
         }
         return $this->render('create', [
@@ -43,6 +44,7 @@ class GenerosController extends \yii\web\Controller
             Yii::$app->db->createCommand()
                 ->update('generos', $generosForm->attributes, ['id' => $id])
                 ->execute();
+            Yii::$app->session->setFlash('success', 'Genero modificado correctamente');
             return $this->redirect(['generos/index']);
         }
 
@@ -54,8 +56,19 @@ class GenerosController extends \yii\web\Controller
 
     public function actionDelete($id)
     {
-        Yii::$app->db->createCommand()->delete('generos', ['id' => $id])->execute();
-        //Yii::$app->db->createCommand()->select
+        $peliculas = Yii::$app->db->createCommand('SELECT *
+                                                     FROM peliculas
+                                                     JOIN generos g
+                                                       ON genero_id=g.id
+                                                    WHERE genero_id = :id', ['id' => $id])
+                                                    ->queryAll();
+        if (empty($peliculas)) {
+            Yii::$app->db->createCommand()->delete('generos', ['id' => $id])->execute();
+            Yii::$app->session->setFlash('success', 'Genero borrado correctamente');
+        } else {
+            Yii::$app->session->setFlash('danger', 'No se puede borrar un género asociado a una película');
+        }
+
         return $this->redirect(['generos/index']);
     }
 
