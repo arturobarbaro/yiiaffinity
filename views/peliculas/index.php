@@ -20,8 +20,10 @@ use yii\helpers\Html;
                     <td><?= Html::encode($fila['duracion']) ?></td>
                     <td><?= Html::encode($fila['genero_id']) ?></td>
                     <td>
-                        <?= Html::a('Modificar', ['peliculas/update', 'id' => $fila['id']], ['class' => 'btn-xs btn-info']) ?>
-                        <?= Html::a('Borrar', ['peliculas/delete', 'id' => $fila['id']], [
+                        <?= Html::a('Modificar', ['peliculas/update', 'id' => $fila['id']]
+                        , ['class' => 'btn-xs btn-info']) ?>
+                        <?= Html::a('Borrar', ['peliculas/delete', 'id' => $fila['id']]
+                        , [
                             'class' => 'btn-xs btn-danger',
                             'data-confirm' => '¿Seguro que desea borrar?',
                             'data-method' => 'POST',

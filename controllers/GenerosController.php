@@ -56,12 +56,12 @@ class GenerosController extends \yii\web\Controller
 
     public function actionDelete($id)
     {
-        $peliculas = Yii::$app->db->createCommand('SELECT *
+        $peliculas = Yii::$app->db->createCommand('SELECT id
                                                      FROM peliculas
-                                                     JOIN generos g
-                                                       ON genero_id=g.id
-                                                    WHERE genero_id = :id', ['id' => $id])
-                                                    ->queryAll();
+                                                    WHERE genero_id = :id
+                                                    LIMIT 1', ['id' => $id])
+                                                    ->queryOne();
+
         if (empty($peliculas)) {
             Yii::$app->db->createCommand()->delete('generos', ['id' => $id])->execute();
             Yii::$app->session->setFlash('success', 'Genero borrado correctamente');
