@@ -66,7 +66,7 @@ class GenerosController extends \yii\web\Controller
             Yii::$app->db->createCommand()->delete('generos', ['id' => $id])->execute();
             Yii::$app->session->setFlash('success', 'Genero borrado correctamente');
         } else {
-            Yii::$app->session->setFlash('danger', 'No se puede borrar un género asociado a una película');
+            Yii::$app->session->setFlash('error', 'No se puede borrar un género asociado a una película');
         }
 
         return $this->redirect(['generos/index']);

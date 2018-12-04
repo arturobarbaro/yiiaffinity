@@ -19,4 +19,16 @@ class PeliculasForm extends Model
             [['titulo'], 'string', 'max' => 255],
         ];
     }
+
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'titulo' => 'Título',
+            'anyo' => 'Año',
+            'sinopsis' => 'Sinopsis',
+            'duracion' => 'Duración',
+            'genero_id' => 'Genero',
+        ];
+    }
 }
