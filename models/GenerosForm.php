@@ -20,7 +20,7 @@ class GenerosForm extends Model
                                                FROM generos
                                               WHERE genero = :genero', [':genero' => $this->$attribute])
                             ->queryOne();
-                if (!empty($fila)) {
+                if (!empty($fila) && $fila['id'] != Yii::$app->request->get('id')) {
                     $this->addError($attribute, 'Ese género ya existe');
                 }
             }],
