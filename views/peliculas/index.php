@@ -18,7 +18,7 @@ use yii\helpers\Html;
                     <td><?= Html::encode($fila['sinopsis']) ?></td>
                     <td><?= Html::encode($fila['anyo']) ?></td>
                     <td><?= Html::encode($fila['duracion']) ?></td>
-                    <td><?= Html::encode($fila['genero_id']) ?></td>
+                    <td><?= Html::encode($fila['genero']) ?></td>
                     <td>
                         <?= Html::a('Modificar', ['peliculas/update', 'id' => $fila['id']]
                         , ['class' => 'btn-xs btn-info']) ?>

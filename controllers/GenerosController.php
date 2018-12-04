@@ -56,11 +56,11 @@ class GenerosController extends \yii\web\Controller
 
     public function actionDelete($id)
     {
-        $peliculas = Yii::$app->db->createCommand('SELECT id
+        $peliculas = Yii::$app->db->createCommand('SELECT id  --count(*)
                                                      FROM peliculas
                                                     WHERE genero_id = :id
                                                     LIMIT 1', ['id' => $id])
-                                                    ->queryOne();
+                                                    ->queryOne();//queryScalar
 
         if (empty($peliculas)) {
             Yii::$app->db->createCommand()->delete('generos', ['id' => $id])->execute();
