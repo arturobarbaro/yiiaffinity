@@ -77,6 +77,11 @@ class GenerosController extends \yii\web\Controller
         ]);
     }
 
+    /**
+     * Modifica un género
+     * @param  int             $id Identificador del género a modificar
+     * @return string|Response     El formulario de modificación o una redirección
+     */
     public function actionUpdate($id)
     {
         $generosForm = new GenerosForm(['attributes' => $this->buscarGenero($id)]);
