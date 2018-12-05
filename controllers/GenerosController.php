@@ -5,10 +5,11 @@ namespace app\controllers;
 use app\models\GenerosForm;
 use Yii;
 use yii\data\Pagination;
+use yii\data\Sort;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
-use yii\web\Response
+use yii\web\Response;
 
 /**
  * Definición del controlador generos.
@@ -36,8 +37,17 @@ class GenerosController extends \yii\web\Controller
             ],
         ];
     }
+    /**
+     * [actionIndex description].
+     * @return [type] [description]
+     */
     public function actionIndex()
     {
+        $sort = new Sort([
+            'attributes' => [
+                'genero',
+            ],
+        ]);
         $count = \Yii::$app->db
             ->createCommand('SELECT count(*) FROM generos')->queryScalar();
 
@@ -78,7 +88,7 @@ class GenerosController extends \yii\web\Controller
     }
 
     /**
-     * Modifica un género
+     * Modifica un género.
      * @param  int             $id Identificador del género a modificar
      * @return string|Response     El formulario de modificación o una redirección
      */
@@ -101,7 +111,7 @@ class GenerosController extends \yii\web\Controller
     }
 
     /**
-     * Borra un género
+     * Borra un género.
      * @param  int       $id Identificador del genero a borrar
      * @return Response      Una redireccion
      */
@@ -133,6 +143,12 @@ class GenerosController extends \yii\web\Controller
         return $listaGeneros;
     }
 
+    /**
+     * Localiza un género por su id.
+     * @param  int                  $id El identificador
+     * @return array                    El género si existe
+     * @throws NotFoundHttpException     Si el género no existe
+     */
     private function buscarGenero($id)
     {
         $fila = Yii::$app->db

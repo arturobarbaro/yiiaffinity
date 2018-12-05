@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\PeliculasForm;
 use Yii;
+use yii\data\Sort;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -13,6 +14,22 @@ class PeliculasController extends \yii\web\Controller
 {
     public function actionIndex()
     {
+        $sort = new Sort([
+            'attributes' => [
+                'titulo',
+                'anyo',
+            ],
+        ]);
+
+        if (empty($sort->orders)) {
+            $orderBy = '1';
+        } else {
+            $res = [];
+            foreach ($sort->ordes as $columna => $sentido) {
+                $res[] = $sentido = SORT_ASC ? "$columna ASC" : "$columna DESC";
+            }
+        }
+
         $filas = \Yii::$app->db
             ->createCommand('SELECT p.*, g.genero
                                FROM peliculas p
