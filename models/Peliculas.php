@@ -32,7 +32,7 @@ class Peliculas extends \yii\db\ActiveRecord
         return [
             [['titulo', 'genero_id'], 'required'],
             [['anyo'], 'number'],
-            [['sinopsis'], 'string'],
+            [['sinopsis'], 'trim'],
             [['duracion', 'genero_id'], 'default', 'value' => null],
             [['duracion', 'genero_id'], 'integer'],
             [['titulo'], 'string', 'max' => 255],

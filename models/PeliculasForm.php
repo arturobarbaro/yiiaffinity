@@ -9,6 +9,7 @@ class PeliculasForm extends Model
     public $titulo;
     public $anyo;
     public $duracion;
+    public $sinopsis;
     public $genero_id;
 
     public function rules()

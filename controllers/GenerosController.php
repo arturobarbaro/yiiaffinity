@@ -8,6 +8,7 @@ use yii\data\Pagination;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
+use yii\web\Response
 
 /**
  * Definición del controlador generos.
@@ -94,6 +95,11 @@ class GenerosController extends \yii\web\Controller
         ]);
     }
 
+    /**
+     * Borra un género
+     * @param  int       $id Identificador del genero a borrar
+     * @return Response      Una redireccion
+     */
     public function actionDelete($id)
     {
         $peliculas = Yii::$app->db->createCommand('SELECT id  --count(*)
