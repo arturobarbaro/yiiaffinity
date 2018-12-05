@@ -5,9 +5,8 @@ namespace app\controllers;
 use app\models\GenerosForm;
 use Yii;
 use yii\data\Pagination;
-use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-
+use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -15,17 +14,16 @@ use yii\web\NotFoundHttpException;
  */
 class GenerosController extends \yii\web\Controller
 {
-
     public function behaviors()
     {
         return [
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
-                    'delete' => ['POST']
+                    'delete' => ['POST'],
                 ],
             ],
-            'acces'=> [
+            'acces' => [
                 'class' => AccessControl::class,
                 'only' => ['update'],
                 'rules' => [
@@ -35,7 +33,7 @@ class GenerosController extends \yii\web\Controller
                     ],
                 ],
             ],
-        ]
+        ];
     }
     public function actionIndex()
     {
