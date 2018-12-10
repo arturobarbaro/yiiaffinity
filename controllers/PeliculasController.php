@@ -53,6 +53,7 @@ class PeliculasController extends \yii\web\Controller
         }
         return $this->render('create', [
             'peliculasForm' => $peliculasForm,
+            'listaGeneros' => $this->listaGeneros(),
         ]);
     }
 
