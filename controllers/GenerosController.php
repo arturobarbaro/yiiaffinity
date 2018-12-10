@@ -56,15 +56,19 @@ class GenerosController extends \yii\web\Controller
             'totalCount' => $count,
         ]);
 
+
         $filas = \Yii::$app->db
-            ->createCommand('SELECT *
-                               FROM generos
-                           ORDER BY genero
-                              LIMIT :limit
-                             OFFSET :offset', [
-                ':limit' => $pagination->limit,
-                'offset' => $pagination->offset,
-                                 ])->queryAll();
+                ->createCommand('SELECT g.*, count(p.id) as num
+                                   FROM generos g
+                              LEFT JOIN peliculas p
+                                     ON p.genero_id=g.id
+                               GROUP BY g.id
+                               ORDER BY genero
+                                  LIMIT :limit
+                                 OFFSET :offset', [
+                        ':limit' => $pagination->limit,
+                        'offset' => $pagination->offset,
+                                            ])->queryAll();
         return $this->render('index', [
             'filas' => $filas,
             'pagination' => $pagination,
