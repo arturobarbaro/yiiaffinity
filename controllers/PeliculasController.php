@@ -37,6 +37,7 @@ class PeliculasController extends \yii\web\Controller
                                  ON p.genero_id = g.id')->queryAll();
         return $this->render('index', [
             'filas' => $filas,
+            'listaGeneros' => $this->listaGeneros(),
         ]);
     }
 
