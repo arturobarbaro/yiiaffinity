@@ -19,7 +19,7 @@ class PeliculasForm extends Model
             [['sinopsis'], 'trim'],
             [['anyo', 'duracion', 'genero_id'], 'number'],
             [['titulo'], 'string', 'max' => 255],
-            [['anyo', 'duracion'], 'integer', 'min' => 0, 'max' => 9999],
+            [['anyo', 'duracion'], 'integer', 'min' => 0, 'max' => 2018],
         ];
     }
 
