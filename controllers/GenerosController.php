@@ -74,7 +74,11 @@ class GenerosController extends \yii\web\Controller
             'pagination' => $pagination,
         ]);
     }
-
+    /**
+     * Crea un género.
+     * @param  int             $id Identificador del género a crear
+     * @return string|Response     El formulario de creación o una redirección
+     */
     public function actionCreate()
     {
         $generosForm = new GenerosForm();
