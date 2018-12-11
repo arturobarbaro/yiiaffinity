@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <tbody>
             <?php foreach ($filas as $fila): ?>
                 <tr>
-                    <td><?= Html::encode($fila['titulo']) ?></td>
+                    <td><?= Html::a(Html::encode($fila['titulo']), ['peliculas/ver', 'id' => $fila['id']], ['class' => '']) ?></td>
                     <td><?= Html::encode($fila['anyo']) ?></td>
                     <td><?= Html::encode($fila['sinopsis']) ?></td>
                     <td><?= Html::encode($fila['duracion']) ?></td>
