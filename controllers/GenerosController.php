@@ -69,17 +69,16 @@ class GenerosController extends \yii\web\Controller
 
 
         $filas = \Yii::$app->db
-                ->createCommand('SELECT g.*, count(p.id) as num
+                ->createCommand("SELECT g.*, count(p.id) as num
                                    FROM generos g
                               LEFT JOIN peliculas p
                                      ON p.genero_id=g.id
                                GROUP BY g.id
-                               ORDER BY :orderBy
+                               ORDER BY $orderBy
                                   LIMIT :limit
-                                 OFFSET :offset', [
+                                 OFFSET :offset", [
                         ':limit' => $pagination->limit,
                         'offset' => $pagination->offset,
-                        ':orderBy' => $orderBy,
                                             ])->queryAll();
         return $this->render('index', [
             'filas' => $filas,
