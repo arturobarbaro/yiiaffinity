@@ -18,26 +18,28 @@ class PeliculasController extends \yii\web\Controller
             'attributes' => [
                 'titulo',
                 'anyo',
+                'duracion',
+                'genero',
             ],
         ]);
-
         if (empty($sort->orders)) {
             $orderBy = '1';
         } else {
             $res = [];
-            foreach ($sort->ordes as $columna => $sentido) {
-                $res[] = $sentido = SORT_ASC ? "$columna ASC" : "$columna DESC";
+            foreach ($sort->orders as $columna => $sentido) {
+                $res[] = $sentido == SORT_ASC ? "$columna ASC" : "$columna DESC";
             }
+            $orderBy = implode(',', $res);
         }
-
         $filas = \Yii::$app->db
-            ->createCommand('SELECT p.*, g.genero
+            ->createCommand("SELECT p.*, g.genero
                                FROM peliculas p
                                JOIN generos g
-                                 ON p.genero_id = g.id')->queryAll();
+                                 ON p.genero_id = g.id
+                           ORDER BY $orderBy")->queryAll();
         return $this->render('index', [
             'filas' => $filas,
-            'listaGeneros' => $this->listaGeneros(),
+            'sort' => $sort,
         ]);
     }
 

@@ -46,8 +46,19 @@ class GenerosController extends \yii\web\Controller
         $sort = new Sort([
             'attributes' => [
                 'genero',
+                'num',
             ],
         ]);
+
+        if (empty($sort->orders)) {
+            $orderBy = '1';
+        } else {
+            $res = [];
+            foreach ($sort->orders as $columna => $sentido) {
+                $res[] = $sentido == SORT_ASC ? "$columna ASC" : "$columna DESC";
+            }
+            $orderBy = implode(',', $res);
+        }
         $count = \Yii::$app->db
             ->createCommand('SELECT count(*) FROM generos')->queryScalar();
 
@@ -63,14 +74,16 @@ class GenerosController extends \yii\web\Controller
                               LEFT JOIN peliculas p
                                      ON p.genero_id=g.id
                                GROUP BY g.id
-                               ORDER BY genero
+                               ORDER BY :orderBy
                                   LIMIT :limit
                                  OFFSET :offset', [
                         ':limit' => $pagination->limit,
                         'offset' => $pagination->offset,
+                        ':orderBy' => $orderBy,
                                             ])->queryAll();
         return $this->render('index', [
             'filas' => $filas,
+            'sort' => $sort,
             'pagination' => $pagination,
         ]);
     }

@@ -8,8 +8,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="row">
     <table class="table table-striped">
         <thead>
-            <th>Género</th>
-            <th>Número de peliculas</th>
+            <th><?= $sort->link('genero') ?></th>
+            <th><?= $sort->link('num') ?></th>
             <th>Acciones</th>
         </thead>
         <tbody>
