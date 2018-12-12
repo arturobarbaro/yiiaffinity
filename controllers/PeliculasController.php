@@ -90,6 +90,7 @@ class PeliculasController extends \yii\web\Controller
     {
         return $this->render('ver', [
             'pelicula' => $this->buscarPelicula($id),
+            'generos' => $this->buscarGenero($id),
             'participantes' => $this->buscarParticipantes($id),
         ]);
     }
@@ -127,5 +128,23 @@ class PeliculasController extends \yii\web\Controller
                           ON persona_id = p.id
                           WHERE pelicula_id = :id', [':id' => $id])
         ->queryAll();
+    }
+
+    /**
+     * Localiza un género por su id.
+     * @param  int                  $id El identificador
+     * @return array                    El género si existe
+     * @throws NotFoundHttpException     Si el género no existe
+     */
+    private function buscarGenero($id)
+    {
+        $fila = Yii::$app->db
+            ->createCommand('SELECT *
+                               FROM generos
+                              WHERE id = :id', [':id' => $id])->queryOne();
+        if ($fila === false) {
+            throw new NotFoundHttpException('Ese género no existe.');
+        }
+        return $fila;
     }
 }

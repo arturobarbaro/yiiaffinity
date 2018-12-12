@@ -15,17 +15,25 @@ $this->params['breadcrumbs'][] = $this->title;
             <td><?= Html::encode($pelicula['anyo']) ?></td>
         </tr>
         <tr>
+            <td align="right"><strong>Sinopsis</strong></td>
+            <td><?= Html::encode($pelicula['sinopsis']) ?></td>
+        </tr>
+        <tr>
             <td align="right"><strong>Duracion</strong></td>
             <td><?= Html::encode($pelicula['duracion']) ?></td>
+        </tr>
+        <tr>
+            <td align="right"><strong>Genero</strong></td>
+            <td><?= Html::encode($generos['genero_id']) ?></td>
         </tr>
         <tr>
             <td align="right"><strong>Participantes</strong></td>
             <td>
                 <?php foreach ($participantes as $participante): ?>
-                    <? Html::encode($participante['nombre']) . '(' .
+                    <?= Html::encode($participante['nombre']) . ' (' .
                      Html::encode($participante['rol']) . ')' ?>
                      <br>
-                <?php endforeach ?>
+                <?php endforeach; ?>
             </td>
         </tr>
 </table>
