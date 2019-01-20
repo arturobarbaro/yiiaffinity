@@ -48,7 +48,7 @@ VALUES ('Comedia')
      , ('Aventuras');
 
 INSERT INTO peliculas (titulo, anyo, sinopsis, duracion, genero_id)
-VALUES ('Los últimos Jedi', 2017, 'Va uno y se cae...', 204, 3)
+VALUES ('Los últimos Jed', 2017, 'Va uno y se cae...', 204, 3)
      , ('Los Goonies', 1985, 'Unos niños encuentran un tesoro', 120, 5)
      , ('Aquí llega Condemor', 1996, 'Mejor no cuento nada...', 90, 1);
 
