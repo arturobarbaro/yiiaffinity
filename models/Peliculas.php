@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use Yii;
+
 /**
  * This is the model class for table "peliculas".
  *
@@ -32,7 +34,7 @@ class Peliculas extends \yii\db\ActiveRecord
         return [
             [['titulo', 'genero_id'], 'required'],
             [['anyo'], 'number'],
-            [['sinopsis'], 'trim'],
+            [['sinopsis'], 'string'],
             [['duracion', 'genero_id'], 'default', 'value' => null],
             [['duracion', 'genero_id'], 'integer'],
             [['titulo'], 'string', 'max' => 255],
@@ -47,11 +49,11 @@ class Peliculas extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'titulo' => 'Título',
-            'anyo' => 'Año',
+            'titulo' => 'Titulo',
+            'anyo' => 'Anyo',
             'sinopsis' => 'Sinopsis',
-            'duracion' => 'Duración',
-            'genero_id' => 'Genero',
+            'duracion' => 'Duracion',
+            'genero_id' => 'Genero ID',
         ];
     }
 

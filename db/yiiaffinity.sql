@@ -48,47 +48,6 @@ VALUES ('Comedia')
      , ('Aventuras');
 
 INSERT INTO peliculas (titulo, anyo, sinopsis, duracion, genero_id)
-VALUES ('Los últimos Jed', 2017, 'Va uno y se cae...', 204, 3)
+VALUES ('Los últimos Jedi', 2017, 'Va uno y se cae...', 204, 3)
      , ('Los Goonies', 1985, 'Unos niños encuentran un tesoro', 120, 5)
      , ('Aquí llega Condemor', 1996, 'Mejor no cuento nada...', 90, 1);
-
-DROP TABLE IF EXISTS personas CASCADE;
-
-CREATE TABLE personas
-(
-    id BIGSERIAL PRIMARY KEY
-  , nombre VARCHAR(255) NOT NULL
-);
-
-DROP TABLE IF EXISTS roles CASCADE;
-
-CREATE TABLE roles
-(
-    id BIGSERIAL PRIMARY KEY
-  , rol VARCHAR(255) NOT NULL UNIQUE
-);
-
-DROP TABLE IF EXISTS participantes CASCADE;
-
-CREATE TABLE participantes
-(
-    pelicula_id BIGINT REFERENCES peliculas (id)
-  , persona_id  BIGINT REFERENCES personas (id)
-  , rol_id      BIGINT REFERENCES roles (id)
-  , PRIMARY KEY (pelicula_id, persona_id, rol_id)
-);
-
-INSERT INTO personas (nombre)
-VALUES ('2pac')
-     , ('haze')
-     , ('goku');
-
-INSERT INTO roles (rol)
-VALUES ('Director')
-     , ('Actor')
-     , ('Guionista');
-
-INSERT INTO participantes (pelicula_id, persona_id, rol_id)
-VALUES (1,1,1)
-     , (1,2,3)
-     , (2,3,2);

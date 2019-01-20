@@ -1,39 +1,23 @@
 <?php
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
-$this->title = 'Ver película';
-$this->params['breadcrumbs'][] = ['label' => 'Películas', 'url' => ['peliculas/index']];
+$this->title = 'Ver una película';
 $this->params['breadcrumbs'][] = $this->title;
+$inputOptions = [
+    'inputOptions' => [
+        'class' => 'form-control',
+        'readonly' => true,
+    ],
+];
 ?>
-<table class="table">
-        <tr>
-            <td align="right"><strong>Titulo</strong></td>
-            <td><?= Html::encode($pelicula['titulo']) ?></td>
-        </tr>
-        <tr>
-            <td align="right"><strong>Año</strong></td>
-            <td><?= Html::encode($pelicula['anyo']) ?></td>
-        </tr>
-        <tr>
-            <td align="right"><strong>Sinopsis</strong></td>
-            <td><?= Html::encode($pelicula['sinopsis']) ?></td>
-        </tr>
-        <tr>
-            <td align="right"><strong>Duracion</strong></td>
-            <td><?= Html::encode($pelicula['duracion']) ?></td>
-        </tr>
-        <tr>
-            <td align="right"><strong>Genero</strong></td>
-            <td><?= Html::encode($generos['genero_id']) ?></td>
-        </tr>
-        <tr>
-            <td align="right"><strong>Participantes</strong></td>
-            <td>
-                <?php foreach ($participantes as $participante): ?>
-                    <?= Html::encode($participante['nombre']) . ' (' .
-                     Html::encode($participante['rol']) . ')' ?>
-                     <br>
-                <?php endforeach; ?>
-            </td>
-        </tr>
-</table>
+
+<?php $form = ActiveForm::begin(['enableClientValidation' => false]) ?>
+    <?= $form->field($peliculasForm, 'titulo', $inputOptions) ?>
+    <?= $form->field($peliculasForm, 'anyo', $inputOptions) ?>
+    <?= $form->field($peliculasForm, 'duracion', $inputOptions) ?>
+    <?= $form->field($peliculasForm, 'genero_id', $inputOptions) ?>
+    <div class="form-group">
+        <?= Html::a('Volver', ['peliculas/index'], ['class' => 'btn btn-danger']) ?>
+    </div>
+<?php ActiveForm::end() ?>

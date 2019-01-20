@@ -2,6 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\BuscarForm;
+use app\models\Generos;
+use app\models\Peliculas;
 use app\models\PeliculasForm;
 use Yii;
 use yii\data\Sort;
@@ -12,138 +15,101 @@ use yii\web\NotFoundHttpException;
  */
 class PeliculasController extends \yii\web\Controller
 {
+    public function actionPrueba()
+    {
+        Yii::$app->session->setFlash('error', 'Esto es un error.');
+        return $this->redirect(['peliculas/index']);
+    }
+
     public function actionIndex()
     {
         $sort = new Sort([
             'attributes' => [
-                'titulo' => ['label' => 'Titutlo'],
+                'titulo',
                 'anyo',
                 'duracion',
                 'genero',
             ],
         ]);
-        if (empty($sort->orders)) {
-            $orderBy = '1';
-        } else {
-            $res = [];
-            foreach ($sort->orders as $columna => $sentido) {
-                $res[] = $sentido == SORT_ASC ? "$columna ASC" : "$columna DESC";
-            }
-            $orderBy = implode(',', $res);
+
+        $buscarForm = new BuscarForm();
+        $query = Peliculas::find();
+
+        if ($buscarForm->load(Yii::$app->request->post()) && $buscarForm->validate()) {
+            $query->andFilterWhere(['ilike', 'titulo', $buscarForm->titulo]);
+            $query->andFilterWhere(['genero_id' => $buscarForm->genero_id]);
         }
-        $filas = \Yii::$app->db
-            ->createCommand("SELECT p.*, g.genero
-                               FROM peliculas p
-                               JOIN generos g
-                                 ON p.genero_id = g.id
-                           ORDER BY $orderBy")->queryAll();
+
+        if (empty($sort->orders)) {
+            $query->orderBy(['id' => SORT_ASC]);
+        } else {
+            $query->orderBy($sort->orders);
+        }
+
         return $this->render('index', [
-            'filas' => $filas,
+            'peliculas' => $query->all(),
             'sort' => $sort,
+            'listaGeneros' => ['' => ''] + $this->listaGeneros(),
+            'buscarForm' => $buscarForm,
         ]);
     }
 
     public function actionCreate()
     {
-        $peliculasForm = new PeliculasForm();
+        $pelicula = new Peliculas();
 
-        if ($peliculasForm->load(Yii::$app->request->post()) && $peliculasForm->validate()) {
-            Yii::$app->db->createCommand()
-                ->insert('peliculas', $peliculasForm->attributes)
-                ->execute();
-            Yii::$app->session->setFlash('success', 'Película insertada correctamente');
+        if ($pelicula->load(Yii::$app->request->post()) && $pelicula->save()) {
             return $this->redirect(['peliculas/index']);
         }
         return $this->render('create', [
-            'peliculasForm' => $peliculasForm,
-            'listaGeneros' => $this->listaGeneros(),
+            'pelicula' => $pelicula,
+        ]);
+    }
+
+    public function actionVer($id)
+    {
+        $pelicula = $this->buscarPelicula($id);
+        // $peliculasForm = new PeliculasForm(['attributes' => $pelicula->attributes]);
+        $pelicula->genero_id = $pelicula->genero->genero;
+
+        return $this->render('ver', [
+            'peliculasForm' => $pelicula,
         ]);
     }
 
     public function actionUpdate($id)
     {
-        $peliculasForm = new PeliculasForm(['attributes' => $this->buscarPelicula($id)]);
+        $pelicula = $this->buscarPelicula($id);
 
-        if ($peliculasForm->load(Yii::$app->request->post()) && $peliculasForm->validate()) {
-            Yii::$app->db->createCommand()
-                ->update('peliculas', $peliculasForm->attributes, ['id' => $id])
-                ->execute();
-            Yii::$app->session->setFlash('success', 'Película modificada correctamente');
+        if ($pelicula->load(Yii::$app->request->post()) && $pelicula->save()) {
             return $this->redirect(['peliculas/index']);
         }
 
         return $this->render('update', [
-            'peliculasForm' => $peliculasForm,
+            'pelicula' => $pelicula,
             'listaGeneros' => $this->listaGeneros(),
-            'participantes' => $this->buscarParticipantes($id),
         ]);
     }
 
     public function actionDelete($id)
     {
-        Yii::$app->db->createCommand()->delete('peliculas', ['id' => $id])->execute();
-        Yii::$app->session->setFlash('success', 'Película borrada correctamente');
+        $this->buscarPelicula($id)->delete();
         return $this->redirect(['peliculas/index']);
-    }
-
-    public function actionVer($id)
-    {
-        return $this->render('ver', [
-            'pelicula' => $this->buscarPelicula($id),
-            'generos' => $this->buscarGenero($id),
-            'participantes' => $this->buscarParticipantes($id),
-        ]);
     }
 
     private function listaGeneros()
     {
-        $generos = Yii::$app->db->createCommand('SELECT * FROM generos')->queryAll();
-        $listaGeneros = [];
-        foreach ($generos as $genero) {
-            $listaGeneros[$genero['id']] = $genero['genero'];
-        }
-        return $listaGeneros;
+        return Generos::find()
+            ->select('genero')
+            ->indexBy('id')
+            ->column();
     }
 
     private function buscarPelicula($id)
     {
-        $fila = Yii::$app->db
-            ->createCommand('SELECT *
-                               FROM peliculas
-                              WHERE id = :id', [':id' => $id])->queryOne();
-        if ($fila === false) {
+        $fila = Peliculas::findOne($id);
+        if ($fila === null) {
             throw new NotFoundHttpException('Esa película no existe.');
-        }
-        return $fila;
-    }
-
-    private function buscarParticipantes($id)
-    {
-        return Yii::$app->db
-        ->createCommand('SELECT p.* nombre, rol
-                          FROM participantes
-                          JOIN roles r
-                          ON rol_id = r.id
-                          JOIN personas p
-                          ON persona_id = p.id
-                          WHERE pelicula_id = :id', [':id' => $id])
-        ->queryAll();
-    }
-
-    /**
-     * Localiza un género por su id.
-     * @param  int                  $id El identificador
-     * @return array                    El género si existe
-     * @throws NotFoundHttpException     Si el género no existe
-     */
-    private function buscarGenero($id)
-    {
-        $fila = Yii::$app->db
-            ->createCommand('SELECT *
-                               FROM generos
-                              WHERE id = :id', [':id' => $id])->queryOne();
-        if ($fila === false) {
-            throw new NotFoundHttpException('Ese género no existe.');
         }
         return $fila;
     }
