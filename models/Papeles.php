@@ -9,6 +9,8 @@ use Yii;
  *
  * @property int $id
  * @property string $papel
+ *
+ * @property Participaciones[] $participaciones
  */
 class Papeles extends \yii\db\ActiveRecord
 {
@@ -27,7 +29,7 @@ class Papeles extends \yii\db\ActiveRecord
     {
         return [
             [['papel'], 'required'],
-            [['papel'], 'string', 'max' => 50],
+            [['papel'], 'string', 'max' => 255],
             [['papel'], 'unique'],
         ];
     }
@@ -41,5 +43,13 @@ class Papeles extends \yii\db\ActiveRecord
             'id' => 'ID',
             'papel' => 'Papel',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getParticipaciones()
+    {
+        return $this->hasMany(Participaciones::className(), ['papel_id' => 'id'])->inverseOf('papel');
     }
 }

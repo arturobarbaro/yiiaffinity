@@ -1,3 +1,4 @@
+--db/load.sh
 DROP TABLE IF EXISTS generos CASCADE;
 
 CREATE TABLE generos
@@ -38,18 +39,16 @@ DROP TABLE IF EXISTS personas CASCADE;
 
 CREATE TABLE personas
 (
-    id       BIGSERIAL   PRIMARY KEY
-  , nombre   VARCHAR(50) NOT NULL
+    id       BIGSERIAL    PRIMARY KEY
+  , nombre   VARCHAR(255) NOT NULL
 );
 
 DROP TABLE IF EXISTS papeles CASCADE;
 
 CREATE TABLE papeles
 (
-    id       BIGSERIAL   PRIMARY KEY
-  , papel    VARCHAR(50) NOT NULL UNIQUE
-                         CONSTRAINT ck_papel_sin_espacios
-                         CHECK (papel NOT LIKE '% %')
+    id       BIGSERIAL    PRIMARY KEY
+  , papel    VARCHAR(255) NOT NULL UNIQUE
 );
 
 --Combinancion ternaria papeles, personas, peliculas
@@ -57,18 +56,9 @@ DROP TABLE IF EXISTS participaciones CASCADE;
 
 CREATE TABLE participaciones
 (
-    pelicula_id   BIGINT   NOT NULL
-                           REFERENCES peliculas (id)
-                           ON DELETE NO ACTION
-                           ON UPDATE CASCADE
-  , persona_id    BIGINT   NOT NULL
-                           REFERENCES personas (id)
-                           ON DELETE NO ACTION
-                           ON UPDATE CASCADE
-  , papel_id      BIGINT   NOT NULL
-                           REFERENCES papeles (id)
-                           ON DELETE NO ACTION
-                           ON UPDATE CASCADE
+    pelicula_id   BIGINT   REFERENCES peliculas (id)
+  , persona_id    BIGINT   REFERENCES personas (id)
+  , papel_id      BIGINT   REFERENCES papeles (id)
   , PRIMARY KEY(pelicula_id,persona_id,papel_id)
 );
 
@@ -98,10 +88,12 @@ VALUES ('Will Smith')
 INSERT INTO papeles (papel)
 VALUES ('Actor')
      , ('Director')
+     , ('Productor')
      , ('Guionista');
 
 INSERT INTO participaciones (pelicula_id,persona_id,papel_id)
 VALUES (1,1,1)
      , (1,2,3)
+     , (1,2,2)
      , (2,2,1)
      , (3,1,3);
