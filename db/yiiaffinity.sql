@@ -34,6 +34,36 @@ CREATE TABLE usuarios
   , password VARCHAR(60) NOT NULL
 );
 
+DROP TABLE IF EXISTS personas CASCADE;
+
+CREATE TABLE personas
+(
+    id       BIGSERIAL   PRIMARY KEY
+  , nombre   VARCHAR(50) NOT NULL
+                         CONSTRAINT ck_nombre_sin_espacios
+                         CHECK (nombre NOT LIKE '% %')
+);
+
+DROP TABLE IF EXISTS papeles CASCADE;
+
+CREATE TABLE papeles
+(
+    id       BIGSERIAL   PRIMARY KEY
+  , papel    VARCHAR(50) NOT NULL UNIQUE
+                         CONSTRAINT ck_papel_sin_espacios
+                         CHECK (papel NOT LIKE '% %')
+);
+
+--Combinancion ternaria papeles, personas, peliculas
+/* DROP TABLE IF EXISTS participaciones CASCADE;
+
+CREATE TABLE participaciones
+(
+    pelicula_id       BIGSERIAL   PRIMARY KEY
+  , persona_id    VARCHAR(50) NOT NULL
+  , papel_id
+); */
+
 -- INSERT
 
 INSERT INTO usuarios (login, password)
