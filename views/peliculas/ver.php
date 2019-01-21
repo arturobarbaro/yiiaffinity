@@ -1,9 +1,6 @@
 <?php
-use app\models\Participaciones;
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
 $this->title = 'Ver una película';
 $this->params['breadcrumbs'][] = $this->title;
 $inputOptions = [
@@ -13,13 +10,14 @@ $inputOptions = [
     ],
 ];
 ?>
-<?php foreach ($pelicula->articipaciones as $participacion): ?>
-    <dl class="">
+<?php foreach ($pelicula->participaciones as $participacion): ?>
+    <dl>
         <dt>Nombre</dt>
-        <dd><?= ?></dd>
-    </dl>.
+        <dd><?= $participacion->persona->nombre ?></dd>
+        <dt>Papel</dt>
+        <dd><?= $participacion->papel->papel ?></dd>
+    </dl>
 <?php endforeach ?>
-
 
 <?php $form = ActiveForm::begin(['enableClientValidation' => false]) ?>
     <?= $form->field($pelicula, 'titulo', $inputOptions) ?>
