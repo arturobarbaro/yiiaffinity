@@ -40,8 +40,6 @@ CREATE TABLE personas
 (
     id       BIGSERIAL   PRIMARY KEY
   , nombre   VARCHAR(50) NOT NULL
-                         CONSTRAINT ck_nombre_sin_espacios
-                         CHECK (nombre NOT LIKE '% %')
 );
 
 DROP TABLE IF EXISTS papeles CASCADE;
@@ -81,3 +79,13 @@ INSERT INTO peliculas (titulo, anyo, sinopsis, duracion, genero_id)
 VALUES ('Los últimos Jedi', 2017, 'Va uno y se cae...', 204, 3)
      , ('Los Goonies', 1985, 'Unos niños encuentran un tesoro', 120, 5)
      , ('Aquí llega Condemor', 1996, 'Mejor no cuento nada...', 90, 1);
+
+INSERT INTO personas (nombre)
+VALUES ('Will Smith')
+     , ('James P')
+     , ('Julia Roberts');
+
+INSERT INTO papeles (papel)
+VALUES ('Actor')
+     , ('Director')
+     , ('Guionista');
