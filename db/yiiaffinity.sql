@@ -53,14 +53,24 @@ CREATE TABLE papeles
 );
 
 --Combinancion ternaria papeles, personas, peliculas
-/* DROP TABLE IF EXISTS participaciones CASCADE;
+DROP TABLE IF EXISTS participaciones CASCADE;
 
 CREATE TABLE participaciones
 (
-    pelicula_id       BIGSERIAL   PRIMARY KEY
-  , persona_id    VARCHAR(50) NOT NULL
-  , papel_id
-); */
+    pelicula_id   BIGINT   NOT NULL
+                           REFERENCES peliculas (id)
+                           ON DELETE NO ACTION
+                           ON UPDATE CASCADE
+  , persona_id    BIGINT   NOT NULL
+                           REFERENCES personas (id)
+                           ON DELETE NO ACTION
+                           ON UPDATE CASCADE
+  , papel_id      BIGINT   NOT NULL
+                           REFERENCES papeles (id)
+                           ON DELETE NO ACTION
+                           ON UPDATE CASCADE
+  , PRIMARY KEY(pelicula_id,persona_id,papel_id)
+);
 
 -- INSERT
 
@@ -89,3 +99,9 @@ INSERT INTO papeles (papel)
 VALUES ('Actor')
      , ('Director')
      , ('Guionista');
+
+INSERT INTO participaciones (pelicula_id,persona_id,papel_id)
+VALUES (1,1,1)
+     , (1,2,3)
+     , (2,2,1)
+     , (3,1,3);
