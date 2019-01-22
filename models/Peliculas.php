@@ -1,9 +1,5 @@
 <?php
-
 namespace app\models;
-
-use Yii;
-
 /**
  * This is the model class for table "peliculas".
  *
@@ -26,7 +22,6 @@ class Peliculas extends \yii\db\ActiveRecord
     {
         return 'peliculas';
     }
-
     /**
      * {@inheritdoc}
      */
@@ -42,7 +37,6 @@ class Peliculas extends \yii\db\ActiveRecord
             [['genero_id'], 'exist', 'skipOnError' => true, 'targetClass' => Generos::className(), 'targetAttribute' => ['genero_id' => 'id']],
         ];
     }
-
     /**
      * {@inheritdoc}
      */
@@ -57,7 +51,6 @@ class Peliculas extends \yii\db\ActiveRecord
             'genero_id' => 'Genero ID',
         ];
     }
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -65,12 +58,15 @@ class Peliculas extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Participaciones::className(), ['pelicula_id' => 'id'])->inverseOf('pelicula');
     }
-
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getGenero()
     {
         return $this->hasOne(Generos::className(), ['id' => 'genero_id'])->inverseOf('peliculas');
+    }
+    public function getPersonas()
+    {
+        return $this->hasMany(Personas::class, ['id' => 'persona_id'])->via('participaciones');
     }
 }

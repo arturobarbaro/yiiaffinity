@@ -1,7 +1,5 @@
 <?php
-
 namespace app\controllers;
-
 use app\models\Generos;
 use app\models\Peliculas;
 use Yii;
@@ -11,7 +9,6 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
-
 class GenerosController extends Controller
 {
     public function behaviors()
@@ -35,46 +32,37 @@ class GenerosController extends Controller
             ],
         ];
     }
-
     /**
      * Listado de géneros.
      * @return string La vista del listado de géneros
      */
     public function actionIndex()
     {
-        $count = Generos::find()->count();
-
         $pagination = new Pagination([
             'defaultPageSize' => 5,
-            'totalCount' => $count,
+            'totalCount' => Generos::find()->count(),
         ]);
-
-        $filas = Generos::find()
+        $filas = Generos::findEspecial()
             ->orderBy('genero')
             ->limit($pagination->limit)
             ->offset($pagination->offset)
             ->all();
-
         return $this->render('index', [
             'filas' => $filas,
             'pagination' => $pagination,
         ]);
     }
-
     public function actionCreate()
     {
         $genero = new Generos();
-
         if ($genero->load(Yii::$app->request->post()) && $genero->save()) {
             Yii::$app->session->setFlash('success', 'Fila insertada correctamente.');
             return $this->redirect(['generos/index']);
         }
-
         return $this->render('create', [
             'genero' => $genero,
         ]);
     }
-
     public function actionVer($id)
     {
         return $this->render('ver', [
@@ -82,7 +70,6 @@ class GenerosController extends Controller
             'peliculas' => Peliculas::findAll(['genero_id' => $id]),
         ]);
     }
-
     /**
      * Modifica un género.
      * @param  int             $id El id del género a modificar
@@ -99,7 +86,6 @@ class GenerosController extends Controller
             'genero' => $genero,
         ]);
     }
-
     /**
      * Borra un género.
      * @param  int      $id El id del género a borrar
@@ -116,7 +102,6 @@ class GenerosController extends Controller
         }
         return $this->redirect(['generos/index']);
     }
-
     /**
      * Localiza un género por su id.
      * @param  int                   $id El id del género

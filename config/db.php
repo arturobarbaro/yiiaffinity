@@ -1,5 +1,4 @@
 <?php
-
 if (($url = getenv('DATABASE_URL')) !== false) {
     // Configuración para Heroku:
     $config = parse_url($url);
@@ -25,9 +24,12 @@ if (($url = getenv('DATABASE_URL')) !== false) {
     $dbname = 'fa';
     $username = 'fa';
     $password = 'fa';
-    $extra = [];
+    $extra = [
+        'enableSchemaCache' => true,
+        'schemaCacheDuration' => 60,
+        'schemaCache' => 'cache',
+    ];
 }
-
 return [
     'class' => 'yii\db\Connection',
     'dsn' => "pgsql:host=$host;port=$port;dbname=$dbname",
