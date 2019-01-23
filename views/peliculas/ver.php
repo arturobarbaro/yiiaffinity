@@ -12,19 +12,23 @@ $inputOptions = [
 ?>
 <?php foreach ($pelicula->participaciones as $participacion): ?>
     <dl class="dl-horizontal">
-        <dt>Nombre</dt>
+        <dt><?= $participacion->papel->papel ?></dt>
         <dd><?= $participacion->persona->nombre ?></dd>
-        <dt>Papel</dt>
-        <dd><?= $participacion->papel->papel ?></dd>
     </dl>
 <?php endforeach ?>
-
-<?php $form = ActiveForm::begin(['enableClientValidation' => false]) ?>
-    <?= $form->field($pelicula, 'titulo', $inputOptions) ?>
-    <?= $form->field($pelicula, 'anyo', $inputOptions) ?>
-    <?= $form->field($pelicula, 'duracion', $inputOptions) ?>
-    <?= $form->field($pelicula, 'genero_id', $inputOptions) ?>
-    <div class="form-group">
-        <?= Html::a('Volver', ['peliculas/index'], ['class' => 'btn btn-danger']) ?>
-    </div>
-<?php ActiveForm::end() ?>
+<dl class="dl-horizontal">
+    <dt>Titulo</dt>
+    <dd><?= $pelicula->titulo ?></dd>
+</dl>
+<dl class="dl-horizontal">
+    <dt>Año</dt>
+    <dd><?= $pelicula->anyo ?></dd>
+</dl>
+<dl class="dl-horizontal">
+    <dt>Duracion</dt>
+    <dd><?= $pelicula->duracion ?></dd>
+</dl>
+<dl class="dl-horizontal">
+    <dt>Genero</dt>
+    <dd><?= $pelicula->genero_id ?></dd>
+</dl>
