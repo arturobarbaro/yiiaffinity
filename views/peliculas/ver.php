@@ -1,34 +1,30 @@
 <?php
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
 $this->title = 'Ver una película';
 $this->params['breadcrumbs'][] = $this->title;
-$inputOptions = [
-    'inputOptions' => [
-        'class' => 'form-control',
-        'readonly' => true,
-    ],
-];
 ?>
-<?php foreach ($pelicula->participaciones as $participacion): ?>
-    <dl class="dl-horizontal">
-        <dt><?= $participacion->papel->papel ?></dt>
-        <dd><?= $participacion->persona->nombre ?></dd>
-    </dl>
-<?php endforeach ?>
 <dl class="dl-horizontal">
-    <dt>Titulo</dt>
-    <dd><?= $pelicula->titulo ?></dd>
+    <dt>Título</dt>
+    <dd><?= Html::encode($pelicula->titulo) ?></dd>
 </dl>
 <dl class="dl-horizontal">
     <dt>Año</dt>
-    <dd><?= $pelicula->anyo ?></dd>
+    <dd><?= Html::encode($pelicula->anyo) ?></dd>
 </dl>
 <dl class="dl-horizontal">
-    <dt>Duracion</dt>
-    <dd><?= $pelicula->duracion ?></dd>
+    <dt>Duración</dt>
+    <dd><?= Html::encode($pelicula->duracion) ?></dd>
 </dl>
 <dl class="dl-horizontal">
-    <dt>Genero</dt>
-    <dd><?= $pelicula->genero_id ?></dd>
+    <dt>Género</dt>
+    <dd><?= Html::encode($pelicula->genero->genero) ?></dd>
 </dl>
+
+<?php foreach ($participantes as $papel => $personas): ?>
+    <dl class="dl-horizontal">
+        <dt><?= Html::encode($papel) ?></dt>
+        <?php foreach ($personas as $persona): ?>
+            <dd><?= Html::encode($persona['nombre']) ?></dd>
+        <?php endforeach ?>
+    </dl>
+<?php endforeach ?>
