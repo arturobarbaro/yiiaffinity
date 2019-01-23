@@ -2,17 +2,16 @@
 
 namespace app\controllers;
 
-use app\models\Generos;
 use app\models\Peliculas;
+use app\models\Personas;
 use Yii;
-use yii\data\Pagination;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
-class GenerosController extends Controller
+class PersonasController extends Controller
 {
     public function behaviors()
     {
@@ -41,36 +40,28 @@ class GenerosController extends Controller
      */
     public function actionIndex()
     {
-        $pagination = new Pagination([
-            'defaultPageSize' => 5,
-            'totalCount' => Generos::find()->count(),
-        ]);
-        $filas = Generos::findWithCuantas()
-            ->orderBy('genero')
-            ->limit($pagination->limit)
-            ->offset($pagination->offset)
+        $filas = Personas::find()
             ->all();
         return $this->render('index', [
-            'filas' => $filas,
-            'pagination' => $pagination,
+            'personas' => $filas,
         ]);
     }
     public function actionCreate()
     {
-        $genero = new Generos();
-        if ($genero->load(Yii::$app->request->post()) && $genero->save()) {
+        $persona = new Personas();
+        if ($persona->load(Yii::$app->request->post()) && $persona->save()) {
             Yii::$app->session->setFlash('success', 'Fila insertada correctamente.');
-            return $this->redirect(['generos/index']);
+            return $this->redirect(['personas/index']);
         }
         return $this->render('create', [
-            'genero' => $genero,
+            'persona' => $persona,
         ]);
     }
     public function actionVer($id)
     {
         return $this->render('ver', [
-            'genero' => $this->buscarGenero($id),
-            'peliculas' => Peliculas::findAll(['genero_id' => $id]),
+            'persona' => $this->buscarGenero($id),
+            'peliculas' => Peliculas::findAll(['persona_id' => $id]),
         ]);
     }
     /**
@@ -80,13 +71,13 @@ class GenerosController extends Controller
      */
     public function actionUpdate($id)
     {
-        $genero = $this->buscarGenero($id);
-        if ($genero->load(Yii::$app->request->post()) && $genero->save()) {
+        $persona = $this->buscarPersona($id);
+        if ($persona->load(Yii::$app->request->post()) && $persona->save()) {
             Yii::$app->session->setFlash('success', 'Fila modificada correctamente.');
-            return $this->redirect(['generos/index']);
+            return $this->redirect(['personas/index']);
         }
         return $this->render('update', [
-            'genero' => $genero,
+            'persona' => $persona,
         ]);
     }
     /**
@@ -96,14 +87,8 @@ class GenerosController extends Controller
      */
     public function actionDelete($id)
     {
-        $genero = $this->buscarGenero($id);
-        if (empty($genero->peliculas)) {
-            $genero->delete();
-            Yii::$app->session->setFlash('success', 'Género borrado correctamente.');
-        } else {
-            Yii::$app->session->setFlash('error', 'Hay películas de ese género.');
-        }
-        return $this->redirect(['generos/index']);
+        $this->buscarPersona($id)->delete();
+        return $this->redirect(['personas/index']);
     }
     /**
      * Localiza un género por su id.
@@ -111,12 +96,12 @@ class GenerosController extends Controller
      * @return array                     El género si existe
      * @throws NotFoundHttpException     Si el género no existe
      */
-    private function buscarGenero($id)
+    private function buscarPersona($id)
     {
-        $genero = Generos::findOne($id);
-        if ($genero === null) {
+        $persona = Personas::findOne($id);
+        if ($persona === null) {
             throw new NotFoundHttpException('El género no existe.');
         }
-        return $genero;
+        return $persona;
     }
 }

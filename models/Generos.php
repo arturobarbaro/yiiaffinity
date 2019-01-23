@@ -1,5 +1,7 @@
 <?php
+
 namespace app\models;
+
 /**
  * This is the model class for table "generos".
  *
@@ -10,7 +12,7 @@ namespace app\models;
  */
 class Generos extends \yii\db\ActiveRecord
 {
-    public $cuantas;
+    private $_cuantas;
     /**
      * {@inheritdoc}
      */
@@ -40,6 +42,19 @@ class Generos extends \yii\db\ActiveRecord
             'genero' => 'Genero',
         ];
     }
+    public function setCuantas($cuantas)
+    {
+        $this->_cuantas = $cuantas;
+    }
+    public function getCuantas()
+    {
+        if ($this->_cuantas === null) {
+            $this->_cuantas = Peliculas::find()
+                ->where(['genero_id' => $this->id])
+                ->count();
+        }
+        return $this->_cuantas;
+    }
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -47,7 +62,7 @@ class Generos extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Peliculas::className(), ['genero_id' => 'id'])->inverseOf('genero');
     }
-    public static function findEspecial()
+    public static function findWithCuantas()
     {
         return static::find()
             ->select('generos.*, COUNT(p.id) AS cuantas')
