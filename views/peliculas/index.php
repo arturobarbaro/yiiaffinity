@@ -4,7 +4,6 @@ use yii\widgets\ActiveForm;
 $this->title = 'Listado de películas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<?php var_dump($sort->orders) ?>
 <?php $form = ActiveForm::begin() ?>
     <?= $form->field($buscarForm, 'titulo') ?>
     <?= $form->field($buscarForm, 'genero_id')->dropDownList($listaGeneros) ?>
