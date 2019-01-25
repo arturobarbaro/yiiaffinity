@@ -27,6 +27,8 @@ class PeliculasController extends \yii\web\Controller
                 'titulo',
                 'anyo',
                 'duracion',
+                'precio',
+                'created_at',
                 'genero',
             ],
         ]);

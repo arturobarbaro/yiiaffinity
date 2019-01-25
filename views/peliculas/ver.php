@@ -16,6 +16,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <dd><?= Html::encode($pelicula->duracion) ?></dd>
 </dl>
 <dl class="dl-horizontal">
+    <dt>Precio</dt>
+    <dd><?= Html::encode($pelicula->precio) ?></dd>
+</dl>
+<dl class="dl-horizontal">
     <dt>Género</dt>
     <dd><?= Html::encode($pelicula->genero->genero) ?></dd>
 </dl>
